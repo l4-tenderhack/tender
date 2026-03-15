@@ -1,0 +1,43 @@
+/* 
+   Design Tokens - Portal Postavshikov 
+   Extracted from https://zakupki.mos.ru/ 
+*/
+
+:root {
+  /* Colors */
+   --portal-red: #db2b21;
+  --portal-red-hover: #cd1f15;
+  --portal-blue: #264b82;
+  --portal-blue-hover: #123d7d;
+  --portal-green: #0d9b68;
+  --portal-green-dark: #237804;
+  
+  --text-main: #1a1a1a;
+  --text-muted: #4d4d4d; /* Darkened from #666666 for better accessibility */
+  --text-light: #737373; /* Darkened from light gray */
+  
+  --bg-page: #f7f8f9;
+  --bg-card: #ffffff;
+  --bg-active-light: #ebf5ff;
+  --bg-success-light: #f6ffed;
+  --bg-error-light: #fff1f0;
+  
+  --border-color: #d9d9d9; /* Darkened from #e5e5e5 */
+  --border-blue: #91d5ff;
+  --border-green: #b7eb8f;
+  --border-red: #ffa39e;
+  
+  /* Typography */
+  --font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+  --font-size-base: 14px;
+  
+  /* Spacing & Borders */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  
+  /* Shadows */
+  --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
+}

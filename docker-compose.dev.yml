@@ -1,0 +1,60 @@
+services:
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    environment:
+      DB_HOST: ${PG_HOST:-postgres}
+      DB_PORT: ${PG_PORT:-5432}
+      DB_USER: ${PG_USER:-tenderhack}
+      DB_PASSWORD: ${PG_PASSWORD}
+      DB_NAME: ${PG_DATABASE:-tenderhack}
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: 200
+      DEFAULT_POOL_SIZE: 20
+      AUTH_TYPE: scram-sha-256
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --appendfsync everysec
+    volumes:
+      - redis_data:/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pgbouncer
+      - redis
+    environment:
+      HOST: 0.0.0.0
+      PORT: ${PORT:-8000}
+      APP_NAME: ${APP_NAME:-TenderHack Backend}
+      APP_ENV: ${APP_ENV:-development}
+      DEBUG: ${DEBUG:-true}
+      DOCS_URL: ${DOCS_URL:-/docs}
+      REDOC_URL: ${REDOC_URL:-/redoc}
+      OPENAPI_URL: ${OPENAPI_URL:-/openapi.json}
+      DATABASE_URL: postgresql+asyncpg://${PG_USER:-tenderhack}:${PG_PASSWORD}@pgbouncer:5432/${PG_DATABASE:-tenderhack}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      WORKERS: ${WORKERS:-4}
+      PG_HOST: ${PG_HOST:-postgres}
+      PG_PORT: ${PG_PORT:-5432}
+      PG_DATABASE: ${PG_DATABASE:-tenderhack}
+      PG_USER: ${PG_USER:-tenderhack}
+      PG_PASSWORD: ${PG_PASSWORD}
+      REDIS_URL: redis://redis:6379/0
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://larek.tech:55300}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3-embedding:0.6b}
+      QDRANT_URL: ${QDRANT_URL:-https://qdrant.larek.tech}
+      QDRANT_COLLECTION: ${QDRANT_COLLECTION:-cte_name}
+      CTE_SEARCH_SCORE_THRESHOLD: ${CTE_SEARCH_SCORE_THRESHOLD:-0.53}
+  frnd:
+    build:
+      context: ./frnd
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+      - PORT=${FRONTEND_PORT:-3000}
+
+volumes:
+  redis_data:

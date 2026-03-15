@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание прямой закупки | СЛУЖБА ПОРТАЛА</title>
+    <link rel="stylesheet" href="tokens.css">
+    <style>
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            font-size: var(--font-size-base);
+        }
+
+        /* Header Mock */
+        header {
+            background-color: #fff;
+            border-bottom: 2px solid var(--portal-red);
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--text-main);
+        }
+
+        .logo span { color: var(--portal-red); }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: var(--portal-blue);
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-light);
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--portal-red);
+            padding-left: 10px;
+        }
+
+        /* Product Table Mock */
+        .product-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .product-img {
+            width: 100px;
+            height: 100px;
+            background: #eee;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        .product-details h2 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+            color: var(--portal-blue);
+        }
+
+        .price-tag {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* SMART WIDGET */
+        .smart-widget {
+            border: 2px solid #e3f2fd;
+            background-color: #f1f8ff;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .smart-icon {
+            background: var(--portal-blue);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .smart-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: var(--portal-blue);
+        }
+
+        .smart-badge {
+            display: inline-block;
+            background: var(--portal-green);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        .smart-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .stat-item .label { color: #666; font-size: 12px; }
+        .stat-item .value { font-weight: 700; font-size: 14px; }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: var(--portal-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--portal-red-hover);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--portal-red);
+            color: var(--portal-red);
+        }
+
+        .label-tag {
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">ПОРТАЛ <span>ПОСТАВЩИКОВ</span></div>
+    <div style="display:flex; gap: 20px;">
+        <span>Личный кабинет Заказчика</span>
+        <div style="width:30px; height:30px; background:#ccc; border-radius:50%"></div>
+    </div>
+</header>
+
+<main>
+    <div style="color: #666; margin-bottom: 10px;">Электронный магазин / Корзина / Создание закупки</div>
+    <h1>Новая прямая закупка</h1>
+
+    <div class="card">
+        <div class="section-title">Состав закупки</div>
+        <div class="product-info">
+            <div class="product-img">ФОТО</div>
+            <div class="product-details">
+                <span class="label-tag">СТЕ 1204405</span>
+                <h2>Бумага офисная SvetoCopy A4, 80г/м2, 500л.</h2>
+                <div>Поставщик: ООО "Офис-Трейд" (ИНН 7701234567)</div>
+                <div class="price-tag">390.00 ₽ <span style="font-size: 14px; font-weight: 400; color: #666;">/ пачка</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SMART AI WIDGET -->
+    <div class="smart-widget">
+        <div class="smart-icon">AI</div>
+        <div class="smart-content">
+            <h3>Интеллектуальный анализатор цен <span class="smart-badge">ЦЕНА ВЫГОДНА</span></h3>
+            <p style="margin: 0; line-height: 1.4;">
+                На основе ретроспективного анализа <b>142 похожих закупок</b> в регионе «Москва» за последние 3 месяца, 
+                выбранная стоимость (390.00 ₽) является оптимальной.
+            </p>
+            
+            <div class="smart-stats">
+                <div class="stat-item">
+                    <div class="label">Среднерыночная</div>
+                    <div class="value">415.00 ₽</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">Мин. на портале</div>
+                    <div class="value">385.00 ₽</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">Ваша экономия</div>
+                    <div class="value" style="color: var(--portal-green)">- 6.02%</div>
+                </div>
+            </div>
+            
+            <p style="font-size: 12px; color: var(--portal-blue); margin-top: 15px; cursor: pointer; text-decoration: underline;">
+                Скачать автоматически сформированное обоснование НМЦК (PDF)
+            </p>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+        <div class="section-title">Параметры поставки</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <label style="display:block; margin-bottom:5px; font-weight:700;">Регион поставки</label>
+                <select style="width:100%; padding:8px; border:1px solid var(--border-color);">
+                    <option>Москва</option>
+                </select>
+            </div>
+            <div>
+                <label style="display:block; margin-bottom:5px; font-weight:700;">Срок поставки (дней)</label>
+                <input type="number" value="3" style="width:100%; padding:8px; border:1px solid var(--border-color);">
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-primary">Отправить на подписание</button>
+        <button class="btn btn-secondary">Сохранить черновик</button>
+        <button class="btn" style="background:transparent; color:#666; text-decoration:underline;">Отмена</button>
+    </div>
+</main>
+
+</body>
+</html>

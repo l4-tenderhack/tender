@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      HOST: 0.0.0.0
+      PORT: ${PORT:-8000}
+      APP_NAME: ${APP_NAME:-TenderHack Backend}
+      APP_ENV: ${APP_ENV:-development}
+      DEBUG: ${DEBUG:-true}
+      DOCS_URL: ${DOCS_URL:-/docs}
+      REDOC_URL: ${REDOC_URL:-/redoc}
+      OPENAPI_URL: ${OPENAPI_URL:-/openapi.json}
+      DATABASE_URL: ${DATABASE_URL}
+LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    ports:
+      - "${PORT:-8000}:8000"
+    command: sh ./scripts/docker-start.sh
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://127.0.0.1:8000/health",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

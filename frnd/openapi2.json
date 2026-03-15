@@ -1,0 +1,2352 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TenderHack Backend",
+    "description": "Backend template for a distributed monolith architecture.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Application healthcheck",
+        "operationId": "healthcheck_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Healthcheck Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Service healthcheck",
+        "operationId": "healthcheck_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Healthcheck Api V1 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "auth",
+          "auth"
+        ],
+        "summary": "Authenticate user and issue access token",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "auth",
+          "auth"
+        ],
+        "summary": "Return current authenticated user",
+        "operationId": "me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/parsing/jobs": {
+      "post": {
+        "tags": [
+          "parsing",
+          "parsing"
+        ],
+        "summary": "Create parsing job",
+        "operationId": "create_parse_job_api_v1_parsing_jobs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParseJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParseJobResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search": {
+      "post": {
+        "tags": [
+          "search",
+          "search"
+        ],
+        "summary": "Full-text search",
+        "operationId": "search_api_v1_search_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "search",
+          "search"
+        ],
+        "summary": "Full-text search (GET)",
+        "operationId": "search_get_api_v1_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Search query",
+              "title": "Q"
+            },
+            "description": "Search query"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "manufacturer",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Manufacturer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/facets": {
+      "get": {
+        "tags": [
+          "search",
+          "search"
+        ],
+        "summary": "Get facets",
+        "operationId": "get_facets_api_v1_search_facets_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Search query",
+              "default": "",
+              "title": "Q"
+            },
+            "description": "Search query"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacetsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/suggest": {
+      "get": {
+        "tags": [
+          "search",
+          "search"
+        ],
+        "summary": "Search suggestions",
+        "operationId": "suggest_api_v1_search_suggest_get",
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Query prefix",
+              "title": "Prefix"
+            },
+            "description": "Query prefix"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/hybrid": {
+      "post": {
+        "tags": [
+          "search",
+          "search"
+        ],
+        "summary": "Hybrid semantic search (Qdrant + Ollama)",
+        "operationId": "hybrid_search_api_v1_search_hybrid_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/stats": {
+      "get": {
+        "tags": [
+          "search",
+          "search"
+        ],
+        "summary": "Search index stats",
+        "operationId": "get_stats_api_v1_search_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Get Stats Api V1 Search Stats Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cte/{cte_id}": {
+      "get": {
+        "tags": [
+          "cte",
+          "cte"
+        ],
+        "summary": "Get CTE by ID",
+        "operationId": "get_cte_by_id_api_v1_cte__cte_id__get",
+        "parameters": [
+          {
+            "name": "cte_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cte Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CteItem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cte/organizations": {
+      "post": {
+        "tags": [
+          "cte",
+          "cte"
+        ],
+        "summary": "Get organizations by CTE IDs",
+        "description": "Return unique organizations (buyers and suppliers) linked to the given cte_ids\nvia contract_items → contracts → organizations.",
+        "operationId": "get_organizations_by_cte_ids_api_v1_cte_organizations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CteOrganizationsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CteOrganizationsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cte-search": {
+      "post": {
+        "tags": [
+          "cte-search"
+        ],
+        "summary": "Search similar CTEs by name and return contracts",
+        "description": "1. Embed the query via Ollama\n2. Search Qdrant for top N similar CTEs\n3. Find all contracts for those CTEs\n4. Filter by date, region, INN\n5. Return matched CTEs + contracts with unit prices",
+        "operationId": "search_cte_api_v1_cte_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CteSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CteSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/generate_doc": {
+      "post": {
+        "tags": [
+          "generate_doc",
+          "generate_doc"
+        ],
+        "summary": "Generate NMCK document",
+        "operationId": "generate_doc_api_v1_generate_doc_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateDocRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nmck/{cte_id}": {
+      "get": {
+        "tags": [
+          "nmck",
+          "nmck"
+        ],
+        "summary": "Calculate НМЦК via vector search + contracts",
+        "operationId": "calculate_nmck_by_search_api_v1_nmck__cte_id__get",
+        "parameters": [
+          {
+            "name": "cte_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Cte Id"
+            }
+          },
+          {
+            "name": "top_n",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Number of similar CTEs from Qdrant",
+              "default": 5,
+              "title": "Top N"
+            },
+            "description": "Number of similar CTEs from Qdrant"
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Contract signed_at lower bound",
+              "title": "Date From"
+            },
+            "description": "Contract signed_at lower bound"
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Contract signed_at upper bound",
+              "title": "Date To"
+            },
+            "description": "Contract signed_at upper bound"
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Buyer region filter (substring)",
+              "title": "Region"
+            },
+            "description": "Buyer region filter (substring)"
+          },
+          {
+            "name": "inn",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Organization INN filter",
+              "title": "Inn"
+            },
+            "description": "Organization INN filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchNmckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nmck/manual": {
+      "post": {
+        "tags": [
+          "nmck",
+          "nmck"
+        ],
+        "summary": "Calculate НМЦК from user-provided contracts",
+        "description": "User provides their own contracts with prices for a given cte_id.\nНМЦК is computed purely from those prices.",
+        "operationId": "calculate_nmck_manual_api_v1_nmck_manual_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualNmckRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManualNmckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nmck/contracts": {
+      "post": {
+        "tags": [
+          "nmck",
+          "nmck"
+        ],
+        "summary": "Save user-provided contracts to the database",
+        "description": "Save an array of manually entered contracts for a given cte_id.",
+        "operationId": "add_contracts_api_v1_nmck_contracts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddContractsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddContractsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddContractsRequest": {
+        "properties": {
+          "cte_id": {
+            "type": "integer",
+            "title": "Cte Id"
+          },
+          "contracts": {
+            "items": {
+              "$ref": "#/components/schemas/ManualContractInput"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Contracts",
+            "description": "Contracts to save"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "contracts"
+        ],
+        "title": "AddContractsRequest"
+      },
+      "AddContractsResponse": {
+        "properties": {
+          "cte_id": {
+            "type": "integer",
+            "title": "Cte Id"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "created"
+        ],
+        "title": "AddContractsResponse"
+      },
+      "ContractItemOut": {
+        "properties": {
+          "cte_id": {
+            "type": "integer",
+            "title": "Cte Id"
+          },
+          "cte_position_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cte Position Name"
+          },
+          "unit_price": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Price"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "cte_position_name",
+          "unit_price",
+          "quantity",
+          "unit_name"
+        ],
+        "title": "ContractItemOut"
+      },
+      "ContractOut": {
+        "properties": {
+          "contract_id": {
+            "type": "integer",
+            "title": "Contract Id"
+          },
+          "contract_external_id": {
+            "type": "integer",
+            "title": "Contract External Id"
+          },
+          "purchase_name": {
+            "type": "string",
+            "title": "Purchase Name"
+          },
+          "signed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signed At"
+          },
+          "buyer_inn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer Inn"
+          },
+          "buyer_region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer Region"
+          },
+          "supplier_inn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier Inn"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ContractItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        }
+      }
+    },
+    "/api/v1/nmck/manual": {
+      "post": {
+        "tags": [
+          "nmck",
+          "nmck"
+        ],
+        "summary": "Calculate НМЦК from user-provided contracts",
+        "description": "User provides their own contracts with prices for a given cte_id.\nНМЦК is computed purely from those prices.",
+        "operationId": "calculate_nmck_manual_api_v1_nmck_manual_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualNmckRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManualNmckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ContractItemOut": {
+        "properties": {
+          "cte_id": {
+            "type": "integer",
+            "title": "Cte Id"
+          },
+          "cte_position_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cte Position Name"
+          },
+          "unit_price": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Price"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "cte_position_name",
+          "unit_price",
+          "quantity",
+          "unit_name"
+        ],
+        "title": "ContractItemOut"
+      },
+      "ContractOut": {
+        "properties": {
+          "contract_id": {
+            "type": "integer",
+            "title": "Contract Id"
+          },
+          "contract_external_id": {
+            "type": "integer",
+            "title": "Contract External Id"
+          },
+          "purchase_name": {
+            "type": "string",
+            "title": "Purchase Name"
+          },
+          "signed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signed At"
+          },
+          "buyer_inn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer Inn"
+          },
+          "buyer_region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer Region"
+          },
+          "supplier_inn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier Inn"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ContractItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_id",
+          "contract_external_id",
+          "purchase_name",
+          "signed_at",
+          "buyer_inn",
+          "buyer_region",
+          "supplier_inn",
+          "items"
+        ],
+        "title": "ContractOut"
+      },
+      "CteItem": {
+        "properties": {
+          "cte_id": {
+            "type": "string",
+            "title": "Cte Id"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "manufacturer": {
+            "type": "string",
+            "title": "Manufacturer"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          },
+          "price_normalized": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Normalized"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "characteristics": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Characteristics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "category",
+          "manufacturer",
+          "description",
+          "price",
+          "price_normalized",
+          "region",
+          "characteristics"
+        ],
+        "title": "CteItem"
+      },
+      "CteMatch": {
+        "properties": {
+          "cte_id": {
+            "type": "string",
+            "title": "Cte Id"
+          },
+          "cte_name": {
+            "type": "string",
+            "title": "Cte Name"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "cte_name",
+          "score"
+        ],
+        "title": "CteMatch"
+      },
+      "CteOrganizationsRequest": {
+        "properties": {
+          "cte_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Cte Ids",
+            "description": "List of CTE IDs to look up"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_ids"
+        ],
+        "title": "CteOrganizationsRequest"
+      },
+      "CteOrganizationsResponse": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "organizations": {
+            "items": {
+              "$ref": "#/components/schemas/OrganizationResponse"
+            },
+            "type": "array",
+            "title": "Organizations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "organizations"
+        ],
+        "title": "CteOrganizationsResponse"
+      },
+      "CteSearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Query",
+            "description": "CTE name to search"
+          },
+          "n": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "N",
+            "description": "Number of similar CTEs",
+            "default": 10
+          },
+          "date_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date From",
+            "description": "Contract signed_at lower bound"
+          },
+          "date_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date To",
+            "description": "Contract signed_at upper bound"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region",
+            "description": "Buyer region filter (substring match)"
+          },
+          "inn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inn",
+            "description": "Organization INN filter"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "CteSearchRequest"
+      },
+      "CteSearchResponse": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "matched_ctes": {
+            "items": {
+              "$ref": "#/components/schemas/CteMatch"
+            },
+            "type": "array",
+            "title": "Matched Ctes"
+          },
+          "contracts": {
+            "items": {
+              "$ref": "#/components/schemas/ContractOut"
+            },
+            "type": "array",
+            "title": "Contracts"
+          },
+          "total_contracts": {
+            "type": "integer",
+            "title": "Total Contracts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query",
+          "matched_ctes",
+          "contracts",
+          "total_contracts"
+        ],
+        "title": "CteSearchResponse"
+      },
+      "DocumentSource": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "supplier": {
+            "type": "string",
+            "title": "Supplier"
+          },
+          "price": {
+            "type": "number",
+            "title": "Price"
+          },
+          "date": {
+            "type": "string",
+            "title": "Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "supplier",
+          "price",
+          "date"
+        ],
+        "title": "DocumentSource"
+      },
+      "FacetItem": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "count"
+        ],
+        "title": "FacetItem"
+      },
+      "FacetsResponse": {
+        "properties": {
+          "category": {
+            "items": {
+              "$ref": "#/components/schemas/FacetItem"
+            },
+            "type": "array",
+            "title": "Category"
+          },
+          "manufacturer": {
+            "items": {
+              "$ref": "#/components/schemas/FacetItem"
+            },
+            "type": "array",
+            "title": "Manufacturer"
+          },
+          "characteristics": {
+            "additionalProperties": {
+              "items": {
+                "$ref": "#/components/schemas/FacetItem"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Characteristics"
+          }
+        },
+        "type": "object",
+        "title": "FacetsResponse"
+      },
+      "GenerateDocRequest": {
+        "properties": {
+          "customer": {
+            "type": "string",
+            "title": "Customer"
+          },
+          "subject": {
+            "type": "string",
+            "title": "Subject"
+          },
+          "quantity": {
+            "type": "integer",
+            "title": "Quantity"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "nmck": {
+            "type": "number",
+            "title": "Nmck"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentSource"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "type": "object",
+        "required": [
+          "customer",
+          "subject",
+          "quantity",
+          "unit",
+          "date",
+          "nmck",
+          "sources"
+        ],
+        "title": "GenerateDocRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LoginRequest": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Username",
+            "examples": [
+              "demo"
+            ]
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Password",
+            "examples": [
+              "demo-password"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "LoginRequest"
+      },
+      "ManualContractInput": {
+        "properties": {
+          "unit_price": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Unit Price",
+            "description": "Price per unit"
+          },
+          "signed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signed At",
+            "description": "Contract date"
+          },
+          "supplier_inn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier Inn",
+            "description": "Supplier INN"
+          }
+        },
+        "type": "object",
+        "required": [
+          "unit_price"
+        ],
+        "title": "ManualContractInput"
+      },
+      "ManualNmckRequest": {
+        "properties": {
+          "cte_id": {
+            "type": "integer",
+            "title": "Cte Id"
+          },
+          "contracts": {
+            "items": {
+              "$ref": "#/components/schemas/ManualContractInput"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Contracts",
+            "description": "User-provided contracts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "contracts"
+        ],
+        "title": "ManualNmckRequest"
+      },
+      "ManualNmckResponse": {
+        "properties": {
+          "cte_id": {
+            "type": "integer",
+            "title": "Cte Id"
+          },
+          "cte_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cte Name"
+          },
+          "contracts": {
+            "items": {
+              "$ref": "#/components/schemas/ManualContractInput"
+            },
+            "type": "array",
+            "title": "Contracts"
+          },
+          "nmck_per_unit": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Nmck Per Unit"
+          },
+          "price_min": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Price Min"
+          },
+          "price_max": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Price Max"
+          },
+          "mean_price": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Mean Price"
+          },
+          "median_price": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Median Price"
+          },
+          "std_dev": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Std Dev"
+          },
+          "coefficient_of_variation": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Coefficient Of Variation"
+          },
+          "is_homogeneous": {
+            "type": "boolean",
+            "title": "Is Homogeneous"
+          },
+          "confidence_interval_low": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Confidence Interval Low"
+          },
+          "confidence_interval_high": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Confidence Interval High"
+          },
+          "sample_size_total": {
+            "type": "integer",
+            "title": "Sample Size Total"
+          },
+          "sample_size_filtered": {
+            "type": "integer",
+            "title": "Sample Size Filtered"
+          },
+          "outliers_removed": {
+            "type": "integer",
+            "title": "Outliers Removed"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "comparable_market_prices"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "cte_name",
+          "contracts",
+          "nmck_per_unit",
+          "price_min",
+          "price_max",
+          "mean_price",
+          "median_price",
+          "std_dev",
+          "coefficient_of_variation",
+          "is_homogeneous",
+          "confidence_interval_low",
+          "confidence_interval_high",
+          "sample_size_total",
+          "sample_size_filtered",
+          "outliers_removed",
+          "warnings"
+        ],
+        "title": "ManualNmckResponse"
+      },
+      "OrganizationResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "inn": {
+            "type": "string",
+            "title": "Inn"
+          },
+          "region_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Name"
+          },
+          "org_type": {
+            "type": "string",
+            "title": "Org Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "inn",
+          "region_name",
+          "org_type"
+        ],
+        "title": "OrganizationResponse"
+      },
+      "ParseJobRequest": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "Data source identifier or URL to parse."
+          }
+        },
+        "type": "object",
+        "required": [
+          "source"
+        ],
+        "title": "ParseJobRequest"
+      },
+      "ParseJobResponse": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "queued"
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_id"
+        ],
+        "title": "ParseJobResponse"
+      },
+      "SearchNmckResponse": {
+        "properties": {
+          "cte_id": {
+            "type": "integer",
+            "title": "Cte Id"
+          },
+          "cte_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cte Name"
+          },
+          "search_query": {
+            "type": "string",
+            "title": "Search Query"
+          },
+          "matched_cte_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Matched Cte Ids"
+          },
+          "matched_cte_names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Matched Cte Names"
+          },
+          "prices_by_cte": {
+            "additionalProperties": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Prices By Cte"
+          },
+          "contracts": {
+            "items": {
+              "$ref": "#/components/schemas/ContractOut"
+            },
+            "type": "array",
+            "title": "Contracts"
+          },
+          "total_contracts": {
+            "type": "integer",
+            "title": "Total Contracts"
+          },
+          "nmck_per_unit": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Nmck Per Unit"
+          },
+          "price_min": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Price Min"
+          },
+          "price_max": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Price Max"
+          },
+          "mean_price": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Mean Price"
+          },
+          "median_price": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Median Price"
+          },
+          "std_dev": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Std Dev"
+          },
+          "coefficient_of_variation": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Coefficient Of Variation"
+          },
+          "is_homogeneous": {
+            "type": "boolean",
+            "title": "Is Homogeneous"
+          },
+          "confidence_interval_low": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Confidence Interval Low"
+          },
+          "confidence_interval_high": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Confidence Interval High"
+          },
+          "sample_size_total": {
+            "type": "integer",
+            "title": "Sample Size Total"
+          },
+          "sample_size_filtered": {
+            "type": "integer",
+            "title": "Sample Size Filtered"
+          },
+          "outliers_removed": {
+            "type": "integer",
+            "title": "Outliers Removed"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "comparable_market_prices"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "cte_name",
+          "search_query",
+          "matched_cte_ids",
+          "matched_cte_names",
+          "prices_by_cte",
+          "contracts",
+          "total_contracts",
+          "nmck_per_unit",
+          "price_min",
+          "price_max",
+          "mean_price",
+          "median_price",
+          "std_dev",
+          "coefficient_of_variation",
+          "is_homogeneous",
+          "confidence_interval_low",
+          "confidence_interval_high",
+          "sample_size_total",
+          "sample_size_filtered",
+          "outliers_removed",
+          "warnings"
+        ],
+        "title": "SearchNmckResponse"
+      },
+      "SearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Query",
+            "description": "Search query string"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Filter by category"
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manufacturer",
+            "description": "Filter by manufacturer"
+          },
+          "price_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Min",
+            "description": "Minimum price filter"
+          },
+          "price_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Max",
+            "description": "Maximum price filter"
+          },
+          "characteristics": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Characteristics",
+            "description": "Characteristic filters (key:value)"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Number of results to return",
+            "default": 20
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Pagination offset",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchRequest"
+      },
+      "SearchResponse": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "execution_time_ms": {
+            "type": "number",
+            "title": "Execution Time Ms"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "execution_time_ms",
+          "results"
+        ],
+        "title": "SearchResponse"
+      },
+      "SearchResult": {
+        "properties": {
+          "cte_id": {
+            "type": "string",
+            "title": "Cte Id"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "manufacturer": {
+            "type": "string",
+            "title": "Manufacturer"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "price": {
+            "type": "number",
+            "title": "Price"
+          },
+          "characteristics": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Characteristics"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "category_boost": {
+            "type": "number",
+            "title": "Category Boost"
+          },
+          "region": {
+            "type": "string",
+            "title": "Region",
+            "default": ""
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cte_id",
+          "category",
+          "manufacturer",
+          "description",
+          "price",
+          "characteristics",
+          "score",
+          "category_boost"
+        ],
+        "title": "SearchResult"
+      },
+      "SuggestResponse": {
+        "properties": {
+          "suggestions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Suggestions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suggestions"
+        ],
+        "title": "SuggestResponse"
+      },
+      "TokenResponse": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token"
+        ],
+        "title": "TokenResponse"
+      },
+      "UserResponse": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "username"
+        ],
+        "title": "UserResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

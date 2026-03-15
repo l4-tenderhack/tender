@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f8f9;
+  --foreground: #1a1a1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Portal Postavshikov Tokens */
+  --color-portal-red: #db2b21;
+  --color-portal-red-hover: #cd1f15;
+  --color-portal-blue: #264b82;
+  --color-portal-blue-hover: #123d7d;
+  --color-portal-green: #0d9b68;
+  --color-portal-green-dark: #237804;
+
+  --color-text-main: #1a1a1a;
+  --color-text-muted: #4d4d4d;
+  --color-text-light: #737373;
+  
+  --color-bg-page: #f7f8f9;
+  --color-bg-card: #ffffff;
+  --color-bg-active-light: #ebf5ff;
+  --color-bg-success-light: #f6ffed;
+  --color-bg-error-light: #fff1f0;
+
+  --color-border-portal: #d9d9d9;
+  --color-border-blue: #91d5ff;
+  --color-border-green: #b7eb8f;
+  --color-border-red: #ffa39e;
+
+  --radius-portal-sm: 4px;
+  --radius-portal-md: 8px;
+
+  --shadow-portal-light: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+body {
+  background-color: var(--color-bg-page);
+  color: var(--color-text-main);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
